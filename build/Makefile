@@ -13,8 +13,8 @@ LTO_FLAGS := -flto
 
 MPKZEROCOST_CC := clang
 MPKZEROCOST_CXX := clang++
-MPKZEROCOST_AR := /usr/bin/llvm-ar-12
-MPKZEROCOST_RANLIB := /usr/bin/llvm-ranlib-12
+MPKZEROCOST_AR := /usr/bin/llvm-ar
+MPKZEROCOST_RANLIB := /usr/bin/llvm-ranlib
 MPKZEROCOST_FLAGS := -fno-asm -fno-asm-blocks -flto -fsanitize=cfi-icall -fsanitize-cfi-icall-generalize-pointers -fno-sanitize-cfi-cross-dso -ftrivial-auto-var-init=zero -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
 
 SAFESTACK_FLAGS=-fsanitize=safe-stack
