@@ -11,10 +11,10 @@ CMAKE_JPEG_FLAGS := -DENABLE_SHARED=OFF -DWITH_SIMD=OFF
 
 LTO_FLAGS := -flto
 
-MPKZEROCOST_CC := clang
-MPKZEROCOST_CXX := clang++
-MPKZEROCOST_AR := /usr/bin/llvm-ar
-MPKZEROCOST_RANLIB := /usr/bin/llvm-ranlib
+MPKZEROCOST_CC := /usr/bin/clang-11
+MPKZEROCOST_CXX := /usr/bin/clang++-11
+MPKZEROCOST_AR := /usr/bin/llvm-ar-11
+MPKZEROCOST_RANLIB := /usr/bin/llvm-ranlib-11
 MPKZEROCOST_FLAGS := -fno-asm -fno-asm-blocks -flto -fsanitize=cfi-icall -fsanitize-cfi-icall-generalize-pointers -fno-sanitize-cfi-cross-dso -ftrivial-auto-var-init=zero -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
 
 SAFESTACK_FLAGS=-fsanitize=safe-stack
@@ -35,7 +35,7 @@ stock_build/libturbojpeg.a: stock_build
 	cd $(shell dirname $@) && $(MAKE)
 
 stock_build/example_image_change_quality: stock_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(CXX) ../example_image_change_quality.cpp -O3 -I $(shell dirname $@) -L $(shell dirname $@) -l:libturbojpeg.a -o $@
+	$(CXX) ../example_image_change_quality.cpp -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
 
 ##############################################
 
@@ -46,7 +46,7 @@ stock_build_debug/libturbojpeg.a: stock_build_debug
 	cd $(shell dirname $@) && $(MAKE)
 
 stock_build_debug/example_image_change_quality: stock_build_debug/libturbojpeg.a ../example_image_change_quality.cpp
-	$(CXX) ../example_image_change_quality.cpp -g -O0 -I $(shell dirname $@) -L $(shell dirname $@) -l:libturbojpeg.a -o $@
+	$(CXX) ../example_image_change_quality.cpp -g -O0 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
 
 ###########################`###################
 
@@ -60,7 +60,7 @@ stocklto_build/libturbojpeg.a: stocklto_build
 	cd $(shell dirname $@) && $(MAKE)
 
 stocklto_build/example_image_change_quality: stocklto_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(CXX) ../example_image_change_quality.cpp $(LTO_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -l:libturbojpeg.a -o $@
+	$(CXX) ../example_image_change_quality.cpp $(LTO_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
 
 ##############################################
 
@@ -77,7 +77,7 @@ mpkzerocost_build/libturbojpeg.a: mpkzerocost_build
 	cd $(shell dirname $@) && $(MAKE)
 
 mpkzerocost_build/example_image_change_quality: mpkzerocost_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -l:libturbojpeg.a -o $@
+	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
 
 ##############################################
 
@@ -94,7 +94,7 @@ mpkzerocost_build_debug/libturbojpeg.a: mpkzerocost_build_debug
 	cd $(shell dirname $@) && $(MAKE)
 
 mpkzerocost_build_debug/example_image_change_quality: mpkzerocost_build_debug/libturbojpeg.a ../example_image_change_quality.cpp
-	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -g -O0 -I $(shell dirname $@) -L $(shell dirname $@) -l:libturbojpeg.a -o $@
+	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -g -O0 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
 
 ##############################################
 
@@ -111,7 +111,7 @@ mpkzerocostsafestack_build/libturbojpeg.a: mpkzerocostsafestack_build
 	cd $(shell dirname $@) && $(MAKE)
 
 mpkzerocostsafestack_build/example_image_change_quality: mpkzerocostsafestack_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) $(SAFESTACK_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -l:libturbojpeg.a -o $@
+	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) $(SAFESTACK_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
 
 ##############################################
 
