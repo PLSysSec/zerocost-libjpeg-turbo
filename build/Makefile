@@ -132,7 +132,7 @@ wasm_build/example_image_change_quality: wasm_build/libturbojpeg.a ../example_im
 
 ##############################################
 
-build: stock_build/example_image_change_quality stocklto_build/example_image_change_quality wasm_build/example_image_change_quality mpkzerocost_build/example_image_change_quality # mpkzerocostsafestack_build/example_image_change_quality
+build: stock_build/example_image_change_quality stocklto_build/example_image_change_quality wasm_build/example_image_change_quality mpkzerocost_build/example_image_change_quality mpkzerocostsafestack_build/example_image_change_quality
 
 build_debug: stock_build_debug/example_image_change_quality mpkzerocost_build_debug/example_image_change_quality
 
