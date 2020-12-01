@@ -35,7 +35,7 @@ stock_build/libturbojpeg.a: stock_build
 	cd $(shell dirname $@) && $(MAKE)
 
 stock_build/example_image_change_quality: stock_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(CXX) ../example_image_change_quality.cpp -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
+	$(CXX) ../example_image_change_quality.cpp -O3 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@
 
 ##############################################
 
@@ -46,7 +46,7 @@ stock_build_debug/libturbojpeg.a: stock_build_debug
 	cd $(shell dirname $@) && $(MAKE)
 
 stock_build_debug/example_image_change_quality: stock_build_debug/libturbojpeg.a ../example_image_change_quality.cpp
-	$(CXX) ../example_image_change_quality.cpp -g -O0 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
+	$(CXX) ../example_image_change_quality.cpp -g -O0 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@
 
 ###########################`###################
 
@@ -60,7 +60,7 @@ stocklto_build/libturbojpeg.a: stocklto_build
 	cd $(shell dirname $@) && $(MAKE)
 
 stocklto_build/example_image_change_quality: stocklto_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(CXX) ../example_image_change_quality.cpp $(LTO_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
+	$(CXX) ../example_image_change_quality.cpp $(LTO_FLAGS) -O3 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@
 
 ##############################################
 
@@ -77,7 +77,7 @@ mpkzerocost_build/libturbojpeg.a: mpkzerocost_build
 	cd $(shell dirname $@) && $(MAKE)
 
 mpkzerocost_build/example_image_change_quality: mpkzerocost_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
+	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -O3 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@
 
 ##############################################
 
@@ -94,7 +94,7 @@ mpkzerocost_build_debug/libturbojpeg.a: mpkzerocost_build_debug
 	cd $(shell dirname $@) && $(MAKE)
 
 mpkzerocost_build_debug/example_image_change_quality: mpkzerocost_build_debug/libturbojpeg.a ../example_image_change_quality.cpp
-	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -g -O0 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
+	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) -g -O0 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@
 
 ##############################################
 
@@ -111,7 +111,7 @@ mpkzerocostsafestack_build/libturbojpeg.a: mpkzerocostsafestack_build
 	cd $(shell dirname $@) && $(MAKE)
 
 mpkzerocostsafestack_build/example_image_change_quality: mpkzerocostsafestack_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) $(SAFESTACK_FLAGS) -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@
+	$(MPKZEROCOST_CXX) ../example_image_change_quality.cpp $(MPKZEROCOST_FLAGS) $(SAFESTACK_FLAGS) -O3 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@
 
 ##############################################
 
@@ -125,14 +125,14 @@ wasm_build/libturbojpeg.a: wasm_build
 	cd $(shell dirname $@) && $(MAKE)
 
 wasm_build/example_image_change_quality: wasm_build/libturbojpeg.a ../example_image_change_quality.cpp
-	$(WASM_CXX) ../example_image_change_quality.cpp -O3 -I $(shell dirname $@) -L $(shell dirname $@) -lturbojpeg -o $@.wasm
+	$(WASM_CXX) ../example_image_change_quality.cpp -O3 -I $(shell dirname $@) $(shell dirname $@)/libturbojpeg.a -o $@.wasm
 	$(LUCET) --bindings ${LUCET_WASI_DIR}/bindings.json \
 		--guard-size "4GiB" --min-reserved-size "4GiB" --max-reserved-size "4GiB" \
 		$@.wasm -o $@
 
 ##############################################
 
-build: stock_build/example_image_change_quality stocklto_build/example_image_change_quality wasm_build/example_image_change_quality mpkzerocost_build/example_image_change_quality mpkzerocostsafestack_build/example_image_change_quality
+build: stock_build/example_image_change_quality stocklto_build/example_image_change_quality wasm_build/example_image_change_quality mpkzerocost_build/example_image_change_quality # mpkzerocostsafestack_build/example_image_change_quality
 
 build_debug: stock_build_debug/example_image_change_quality mpkzerocost_build_debug/example_image_change_quality
 
