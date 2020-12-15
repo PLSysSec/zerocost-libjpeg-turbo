@@ -8,6 +8,7 @@ SHELL := /bin/bash
 CURR_DIR := $(shell realpath ./)
 
 CMAKE_JPEG_FLAGS := -DENABLE_SHARED=OFF -DWITH_SIMD=OFF
+JPEG_C_FLAGS :=
 
 CXX_FLAGS := -std=c++17
 DEBUG_FLAGS := -g -O0
@@ -31,7 +32,7 @@ LUCET_WASI := $(LUCET_SRC)/target/release/lucet-wasi-wasmsbx
 ###########################`###################
 
 stock_build:
-	cmake -S ../ -B $@ -DCMAKE_BUILD_TYPE=Release $(CMAKE_JPEG_FLAGS)
+	cmake -S ../ -B $@ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="$(JPEG_C_FLAGS)" $(CMAKE_JPEG_FLAGS)
 
 stock_build/libturbojpeg.a: stock_build
 	cd $(shell dirname $@) && $(MAKE)
@@ -50,7 +51,7 @@ stock_build/all: stock_build/example_image_change_quality stock_build/example_as
 ##############################################
 
 stock_build_debug:
-	cmake -S ../ -B $@ -DCMAKE_BUILD_TYPE=Debug $(CMAKE_JPEG_FLAGS)
+	cmake -S ../ -B $@ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="$(JPEG_C_FLAGS)" $(CMAKE_JPEG_FLAGS)
 
 stock_build_debug/libturbojpeg.a: stock_build_debug
 	cd $(shell dirname $@) && $(MAKE)
@@ -70,7 +71,7 @@ stock_build_debug/all: stock_build_debug/example_image_change_quality stock_buil
 
 stocklto_build:
 	cmake -S ../ -B $@ -DCMAKE_BUILD_TYPE=Release $(CMAKE_JPEG_FLAGS) \
-		-DCMAKE_C_FLAGS="$(LTO_FLAGS)" \
+		-DCMAKE_C_FLAGS="$(LTO_FLAGS) $(JPEG_C_FLAGS)" \
 		-DCMAKE_LD_FLAGS="$(LTO_FLAGS)"
 
 stocklto_build/libturbojpeg.a: stocklto_build
@@ -95,7 +96,7 @@ mpkzerocost_build:
 		-DCMAKE_CXX_COMPILER=$(MPKZEROCOST_CXX) \
 		-DCMAKE_AR=$(MPKZEROCOST_AR) \
 		-DCMAKE_RANLIB=$(MPKZEROCOST_RANLIB) \
-		-DCMAKE_C_FLAGS="$(MPKZEROCOST_FLAGS)" \
+		-DCMAKE_C_FLAGS="$(MPKZEROCOST_FLAGS) $(JPEG_C_FLAGS)" \
 		-DCMAKE_LD_FLAGS="$(MPKZEROCOST_FLAGS)"
 
 mpkzerocost_build/libturbojpeg.a: mpkzerocost_build
@@ -120,7 +121,7 @@ mpkzerocost_build_debug:
 		-DCMAKE_CXX_COMPILER=$(MPKZEROCOST_CXX) \
 		-DCMAKE_AR=$(MPKZEROCOST_AR) \
 		-DCMAKE_RANLIB=$(MPKZEROCOST_RANLIB) \
-		-DCMAKE_C_FLAGS="$(MPKZEROCOST_FLAGS)" \
+		-DCMAKE_C_FLAGS="$(MPKZEROCOST_FLAGS) $(JPEG_C_FLAGS)" \
 		-DCMAKE_LD_FLAGS="$(MPKZEROCOST_FLAGS)"
 
 mpkzerocost_build_debug/libturbojpeg.a: mpkzerocost_build_debug
@@ -143,7 +144,7 @@ wasm_build:
 	cmake -S ../ -B $@ -DCMAKE_BUILD_TYPE=Release $(CMAKE_JPEG_FLAGS) \
 		-DCMAKE_C_COMPILER=$(WASM_CC) \
 		-DCMAKE_CXX_COMPILER=$(WASM_CXX) \
-		-DCMAKE_C_FLAGS="-I $(shell realpath ./wasm_extra)"
+		-DCMAKE_C_FLAGS="-I $(shell realpath ./wasm_extra) $(JPEG_C_FLAGS)"
 
 wasm_build/libturbojpeg.a: wasm_build
 	cd $(shell dirname $@) && $(MAKE)
